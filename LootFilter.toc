@@ -4,7 +4,7 @@
 ## Author: meter@lootfilter.com, tweak@lootfilter.com
 ## URL: http://www.lootfilter.com
 ## SavedVariables: LootFilterVars
-## X-Version: 3.15
+## X-Version: 1.0.1
 
 xml\templates.xml
 

@@ -363,6 +363,7 @@ function LootFilter.OnEvent()
 			LootFilter.takeBagSnapshot();
 
 			LootFilterButtonGeneral:LockHighlight();
+			LootFilter.setTitle();
 			LootFilter.getNames();
 			LootFilter.getNamesDelete();
 			LootFilter.getItemValue();
