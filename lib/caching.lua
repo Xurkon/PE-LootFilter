@@ -101,9 +101,8 @@ function LootFilter.deleteItems(timeout, delete)
 		else -- delete items
 			if (LootFilter.deleteItemFromBag(item)) then
 				if (LootFilter.questUpdateToggle == 1) then
-					LootFilter.lastDeleted = item["name"]; 
-				end;				
-				table.remove(LootFilter.cleanList, 1);
+					LootFilter.lastDeleted = item["name"];
+				end;
 			end;
 			interval = LootFilter.LOOT_PARSE_DELAY;
 			LootFilter.CleanScrollBar_Update(true);
