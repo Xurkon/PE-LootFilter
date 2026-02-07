@@ -55,8 +55,10 @@ function LootFilter.processBagUpdate()
 	end
 
 	local newItems = LootFilter.findNewItemsInBags();
+	LootFilter.debug("|cff44ff44[LOOTBOT]|r BAG_UPDATE detected " .. tostring(table.getn(newItems)) .. " new item(s)");
 
 	for _, item in ipairs(newItems) do
+		LootFilter.debug("|cff44ff44[LOOTBOT]|r New item: " .. tostring(item["name"]) .. " (id=" .. tostring(item["id"]) .. ") bag=" .. tostring(item["bag"]) .. " slot=" .. tostring(item["slot"]));
 		-- Add to item stack for processing
 		table.insert(LootFilterVars[LootFilter.REALMPLAYER].itemStack, item);
 
@@ -195,6 +197,7 @@ function LootFilter.OnEvent()
 					-- initialize item and push it on the stack
 					local item = LootFilter.getBasicItemInfo(GetLootSlotLink(i));
 					if (item ~= nil) then
+						LootFilter.debug("|cff44ff44[LOOT]|r Loot window item: " .. tostring(item["name"]) .. " (id=" .. tostring(item["id"]) .. ") " .. tostring(item["link"]));
 						if (not LootFilterVars[LootFilter.REALMPLAYER].caching) then
 							table.insert(LootFilterVars[LootFilter.REALMPLAYER].itemStack, item);
 						end;

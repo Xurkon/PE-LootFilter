@@ -7,6 +7,7 @@ function LootFilter.matchProperties(key, value, item, keep)
 	end; --]]
 	
 	if (string.match(key, "^QU")) then -- quality entry
+		LootFilter.debug("|cff00ffff[MATCH]|r Quality check: key=" .. tostring(key) .. " ruleValue=" .. tostring(value) .. " itemRarity=" .. tostring(item["rarity"]));
 		if (item["rarity"] == value) then
 			reason = LootFilter.Locale.LocText["LTQualMatched"].." ("..value..")";
 		elseif (value == -1) then
@@ -44,7 +45,9 @@ function LootFilter.matchProperties(key, value, item, keep)
 		end;
 	elseif (key == "names") then
 		for _, name in pairs(value) do
-			if (LootFilter.matchItemNames(item, name)) then
+			local nameMatched = LootFilter.matchItemNames(item, name);
+			LootFilter.debug("|cff00ffff[NAMES]|r \"" .. tostring(name) .. "\" vs \"" .. tostring(item["name"]) .. "\" => " .. (nameMatched and "|cff00ff00MATCHED|r" or "no match"));
+			if (nameMatched) then
 				reason = LootFilter.Locale.LocText["LTNameMatched"].." ("..name..")";
 				break;
 			end;
@@ -99,6 +102,7 @@ function LootFilter.findItemInBags(item)
 						if (LootFilter.matchItemNames(item, containerItem["name"])) then
 							item["bag"] = j;
 							item["slot"] = i;
+							LootFilter.debug("|cff00ffff[FIND]|r Found \"" .. tostring(item["name"]) .. "\" in bag=" .. j .. " slot=" .. i);
 							return item;
 							-- item["count"] = item["count"] + 1;
 						end;
@@ -107,6 +111,7 @@ function LootFilter.findItemInBags(item)
 			end;
 		end;
 	end;
+	LootFilter.debug("|cff00ffff[FIND]|r \"" .. tostring(item["name"]) .. "\" NOT found in any bag");
 	return item;
 end;
 

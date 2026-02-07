@@ -114,14 +114,23 @@ function LootFilter.command(cmd)
 		else
 			LootFilter.print("|cffff0000Loot Bot Mode DISABLED|r - Only items from loot windows will be filtered.");
 		end
+	elseif (args[1] == "debug") then
+		LootFilterVars[LootFilter.REALMPLAYER].debug = not LootFilterVars[LootFilter.REALMPLAYER].debug;
+		if LootFilterVars[LootFilter.REALMPLAYER].debug then
+			LootFilter.print("|cff00ff00Debug Mode ENABLED|r - Diagnostic output will appear in chat.");
+		else
+			LootFilter.print("|cffff0000Debug Mode DISABLED|r");
+		end
 	elseif (args[1] == "status") then
 		LootFilter.print("Loot Bot Mode: " .. (LootFilterVars[LootFilter.REALMPLAYER].lootbotmode and "|cff00ff00ENABLED|r" or "|cffff0000DISABLED|r"));
 		LootFilter.print("Filtering: " .. (LootFilterVars[LootFilter.REALMPLAYER].enabled and "|cff00ff00ENABLED|r" or "|cffff0000DISABLED|r"));
+		LootFilter.print("Debug Mode: " .. (LootFilterVars[LootFilter.REALMPLAYER].debug and "|cff00ff00ENABLED|r" or "|cffff0000DISABLED|r"));
 		LootFilter.print("GetSellValue API: " .. (GetSellValue and "|cff00ff00AVAILABLE|r" or "|cffff0000NOT AVAILABLE|r"));
 	elseif (args[1] == "help") then
 		LootFilter.print("Commands:");
 		LootFilter.print("  /lf - Toggle options window");
 		LootFilter.print("  /lf lootbot - Toggle loot bot mode (for companion/pet looting)");
+		LootFilter.print("  /lf debug - Toggle debug mode (diagnostic output in chat)");
 		LootFilter.print("  /lf status - Show current status");
 		LootFilter.print("  /lf help - Show this help");
 	end;

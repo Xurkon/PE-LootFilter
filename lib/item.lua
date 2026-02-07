@@ -48,18 +48,21 @@ end
 
 function LootFilter.deleteItemFromBag(item)
 	if (item ~= nil) then
+		LootFilter.debug("|cffff4444[DELETE]|r Attempting delete: " .. tostring(item["name"]) .. " bag=" .. tostring(item["bag"]) .. " slot=" .. tostring(item["slot"]) .. " confirmdel=" .. tostring(LootFilterVars[LootFilter.REALMPLAYER].confirmdel));
 		if LootFilterVars[LootFilter.REALMPLAYER].confirmdel then
 			LootFilter.confirmDelete(item);
 		else
 			PickupContainerItem(item["bag"], item["slot"]);
-			if CursorHasItem() then
+			local hasItem = CursorHasItem();
+			LootFilter.debug("|cffff4444[DELETE]|r PickupContainerItem => CursorHasItem=" .. tostring(hasItem));
+			if hasItem then
 				DeleteCursorItem();
 			end
 			local myTime = GetTime();
 			return true;
 		end
 	end;
-	return false;	
+	return false;
 end;
 
 
