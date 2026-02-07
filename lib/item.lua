@@ -55,7 +55,7 @@ function LootFilter.deleteItemFromBag(item)
 			if CursorHasItem() then
 				DeleteCursorItem();
 			end
-			myTime = GetTime();
+			local myTime = GetTime();
 			return true;
 		end
 	end;
@@ -144,7 +144,7 @@ end;
 
 function LootFilter.findItemWithLock()
 	for j=0 , 4 , 1 do
-		x = GetContainerNumSlots(j);
+		local x = GetContainerNumSlots(j);
 		for i=0 , x , 1 do
 			local _, _, locked = GetContainerItemInfo(j,i);
 			if (locked) then

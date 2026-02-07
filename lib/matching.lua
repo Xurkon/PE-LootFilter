@@ -122,6 +122,7 @@ function LootFilter.matchItemNames(item, searchName)
 	end;
 	seterrorhandler(errH);
 	
+	local comment;
 	searchName, comment= LootFilter.stripComment(searchName);
 	
 	if (string.find(searchName, "##", 1, true) == 1) then

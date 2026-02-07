@@ -24,7 +24,7 @@ function LootFilter.processCaching()
 		return;
 	end;
 			
-	slots = LootFilter.constructCleanList();
+	local slots = LootFilter.constructCleanList();
 	
 	if (slots < LootFilterVars[LootFilter.REALMPLAYER].freebagslots) and (table.getn(LootFilter.cleanList) > 0)  then
 		local needSlots = LootFilterVars[LootFilter.REALMPLAYER].freebagslots-slots;

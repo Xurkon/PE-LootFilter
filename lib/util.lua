@@ -97,8 +97,8 @@ function LootFilter.toggleWindow()
 end;
 
 function LootFilter.command(cmd)
-	args= {};
-	i= 1;
+	local args= {};
+	local i= 1;
 	for w in string.gmatch(cmd, "%w+") do
 		args[i]= w;
 		i= i + 1;
@@ -134,7 +134,7 @@ function LootFilter.constructCleanList()
 	local totalValue = 0;
 	for j=0 , 4 , 1 do
 		if (LootFilterVars[LootFilter.REALMPLAYER].openbag[j]) then
-			x = GetContainerNumSlots(j);
+			local x = GetContainerNumSlots(j);
 			for i=1 , x , 1 do
 				local item = LootFilter.getBasicItemInfo(GetContainerItemLink(j,i));
 				if (item ~= nil) then
@@ -164,7 +164,7 @@ end;
 
 function LootFilter.calculateCleanListValue()
 	local totalValue = 0;
-	x = table.getn(LootFilter.cleanList);
+	local x = table.getn(LootFilter.cleanList);
 	for j = 1, x, 1 do
 		if (LootFilter.cleanList[j]["value"] < 0) then
 			totalValue = totalValue + tonumber((LootFilter.cleanList[j]["value"]+1000)*LootFilter.cleanList[j]["amount"]);

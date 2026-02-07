@@ -190,7 +190,7 @@ function LootFilter.OnEvent()
 		local numitems= GetNumLootItems();
 		for i = 1, numitems, 1 do
 			if (not LootSlotIsCoin(i)) then
-				icon, name, quantity, quality= GetLootSlotInfo(i);
+				local icon, name, quantity, quality= GetLootSlotInfo(i);
 				if (icon ~= nil) then
 					-- initialize item and push it on the stack
 					local item = LootFilter.getBasicItemInfo(GetLootSlotLink(i));

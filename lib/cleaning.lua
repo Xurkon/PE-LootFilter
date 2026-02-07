@@ -7,7 +7,7 @@ function LootFilter.processCleaning() -- display the cleanList in the Clean tab
 	LootFilterButtonDeleteItems:Disable();
 	LootFilterButtonIWantTo:Disable();
 	LootFilter.constructCleanList();
-	totalValue = LootFilter.calculateCleanListValue()
+	local totalValue = LootFilter.calculateCleanListValue()
 	if (totalValue > 0) then
 		-- Copied from Quick Repair
 		totalValue = LootFilter.round(totalValue * 10000);
@@ -29,8 +29,8 @@ function LootFilter.processCleaning() -- display the cleanList in the Clean tab
 end;
 
 function LootFilter.showItemTooltip(frame) -- show itemTooltip
-	fontString = getglobal("cleanLine"..string.match(frame:GetName(), "(%d+)"));
-	value = fontString:GetText();
+	local fontString = getglobal("cleanLine"..string.match(frame:GetName(), "(%d+)"));
+	local value = fontString:GetText();
 	if (LootFilter.cleanList ~= nil) and (table.getn(LootFilter.cleanList) > 0) and (value ~= nil) and (value ~= "") then
 		local item = LootFilter.getBasicItemInfo(value);
 
@@ -43,8 +43,8 @@ function LootFilter.showItemTooltip(frame) -- show itemTooltip
 end;
 
 function LootFilter.addItemToKeepList(frame) -- add items to the keep list if user shift-clicks
-	fontString = getglobal("cleanLine"..string.match(frame:GetName(), "(%d+)"));
-	value = fontString:GetText();
+	local fontString = getglobal("cleanLine"..string.match(frame:GetName(), "(%d+)"));
+	local value = fontString:GetText();
 	if (value ~= nil) and (value ~= "") then
 		if (IsShiftKeyDown()) then
 			table.insert(LootFilterVars[LootFilter.REALMPLAYER].keepList["names"], LootFilter.getNameOfItem(value));
