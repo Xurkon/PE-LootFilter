@@ -75,7 +75,7 @@ end;
 function LootFilter.sendAddonMessage(value, channel)
 	if (channel == 1) then
 		local guild = GetGuildInfo("player");
-		if (nil ~= nil) then
+		if (guild ~= nil) then
 			SendAddonMessage("LootFilter", value, "GUILD", "");
 		end;
 	elseif (channel == 2) then
