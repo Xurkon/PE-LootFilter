@@ -1,4 +1,4 @@
-LOOT FILTER v3.15 - PROJECT EBONHOLD - WoW WotLK 3.3.5a
+LOOT FILTER - PROJECT EBONHOLD - WoW WotLK 3.3.5a
 =====================================
 (The code is modified using AI so I don't take credit for it)
 
