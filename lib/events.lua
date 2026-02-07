@@ -212,6 +212,9 @@ function LootFilter.OnEvent()
 	-- start processing the items we have just looted
 	if (event == "LOOT_CLOSED") and (LootFilterVars[LootFilter.REALMPLAYER].enabled) then
 		LootFilter.lootWindowOpen = false;
+		if LootFilterVars[LootFilter.REALMPLAYER].lootbotmode then
+			LootFilter.takeBagSnapshot();
+		end
 		LootFilter.LOOT_MAXTIME = GetTime() + LootFilter.LOOT_TIMEOUT;
 		LootFilter.itemOpen = false;
 		if (table.getn(LootFilter.timerArr) == 0) then
