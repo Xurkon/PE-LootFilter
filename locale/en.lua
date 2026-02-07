@@ -256,9 +256,3 @@ LFINT_TXT_SIZETOCALCULATE_TEXT3 = "maximum stack size";
 
 BINDING_NAME_LFINT_TXT_TOGGLE = "Toggle window";
 BINDING_HEADER_LFINT_TXT_LOOTFILTER = "Loot Filter";
-
-
---[[
-New entries to v3.9:
-	OPConfirmDelete
---]]

@@ -66,35 +66,29 @@ function LootFilter.deleteItemFromBag(item)
 end;
 
 
--- get the current amount of items
 function LootFilter.getStackSizeOfItem(item)
 	local amount;
 	_, amount, _, _, _ = GetContainerItemInfo(item["bag"], item["slot"]);
 	return amount;
 end;
 
--- get id of an item
 function LootFilter.getIdOfItem(itemLink)
 	return tonumber(string.match(itemLink, ":(%d+)"));
 end;
 
--- get name of an item
 function LootFilter.getNameOfItem(itemLink)
 	return string.match(itemLink, "%[(.*)%]");
 end;
 
--- get stack size of an item
 function LootFilter.getMaxStackSizeOfItem(item)
 	local _, _, _, _, _, _, _, stackSize = GetItemInfo(item["id"])
 	return tonumber(stackSize);
 end;
 
--- get value of an item
 function LootFilter.getValueOfItem(item)
 	local itemValue;
 	local itemValueAuctioneer;
-	
-	-- try and get marketvalue
+
 	if (LootFilter.marketValue) and (LootFilterVars[LootFilter.REALMPLAYER].marketvalue) then
 		itemValueAuctioneer = AucAdvanced.API.GetMarketValue(item["id"]);
 	end
@@ -103,7 +97,6 @@ function LootFilter.getValueOfItem(item)
 	end;
 	itemValueAuctioneer = tonumber(itemValueAuctioneer);
 
-	-- try and get vendor value
 	if (GetSellValue) then
 		itemValue = GetSellValue(item["id"]);
 	end;
@@ -111,8 +104,7 @@ function LootFilter.getValueOfItem(item)
 		itemValue = 0;
 	end;
 	itemValue = tonumber(itemValue);
-	
-	-- use the highest value available
+
 	if (itemValue < itemValueAuctioneer) then
 		itemValue = itemValueAuctioneer;
 	end;
@@ -125,7 +117,6 @@ function LootFilter.getValueOfItem(item)
 end;
 
 
--- determine if an item is a container
 function LootFilter.openItemIfContainer(item)
 	if (LootFilter.itemOpen == nil) or (LootFilter.itemOpen == false) then -- only try and open something once after looting because it locks up if you don't
 		for key,value in pairs(LootFilterVars[LootFilter.REALMPLAYER].openList) do
@@ -162,15 +153,13 @@ function LootFilter.findItemWithLock()
 	return "";
 end;
 
--- Re-resolve the value of an item if it was not available at creation time
--- GetItemInfo (used by GetSellValue) may return nil for items not yet in the client cache
+-- Re-resolve value if GetItemInfo hadn't cached the item yet
 function LootFilter.ensureItemValue(item)
 	if (item["value"] == nil) or (item["value"] == 0) then
 		item["value"] = LootFilter.getValueOfItem(item);
 	end
 end;
 
--- requires 'link' to be present
 function LootFilter.getBasicItemInfo(link)
 	local item = nil;
 	if (link ~= nil) then

@@ -1,5 +1,3 @@
--- Take a snapshot of current bag contents for loot bot mode
--- Stores link and count so stackable item changes are detected
 function LootFilter.takeBagSnapshot()
 	LootFilter.bagSnapshot = {};
 	for bag = 0, 4 do
@@ -15,7 +13,6 @@ function LootFilter.takeBagSnapshot()
 	end
 end
 
--- Find new items by comparing current bags to snapshot
 function LootFilter.findNewItemsInBags()
 	local newItems = {};
 	for bag = 0, 4 do
@@ -28,8 +25,7 @@ function LootFilter.findNewItemsInBags()
 					local count = select(2, GetContainerItemInfo(bag, slot)) or 0;
 					local current = link .. ":" .. count;
 					local old = LootFilter.bagSnapshot[key];
-					-- Item is new if slot was empty, had a different item, or stack count changed
-					if not old or old ~= current then
+						if not old or old ~= current then
 						local item = LootFilter.getBasicItemInfo(link);
 						if item then
 							item["bag"] = bag;
@@ -45,7 +41,6 @@ function LootFilter.findNewItemsInBags()
 	return newItems;
 end
 
--- Process items detected via BAG_UPDATE (loot bot mode)
 function LootFilter.processBagUpdate()
 	if not LootFilterVars[LootFilter.REALMPLAYER].lootbotmode then
 		return;
@@ -59,10 +54,8 @@ function LootFilter.processBagUpdate()
 
 	for _, item in ipairs(newItems) do
 		LootFilter.debug("|cff44ff44[LOOTBOT]|r New item: " .. tostring(item["name"]) .. " (id=" .. tostring(item["id"]) .. ") bag=" .. tostring(item["bag"]) .. " slot=" .. tostring(item["slot"]));
-		-- Add to item stack for processing
 		table.insert(LootFilterVars[LootFilter.REALMPLAYER].itemStack, item);
 
-		-- Track session value if GetSellValue is available
 		if GetSellValue then
 			LootFilter.sessionAdd(item);
 			LootFilterVars[LootFilter.REALMPLAYER].session["end"] = time();
@@ -70,10 +63,8 @@ function LootFilter.processBagUpdate()
 		end
 	end
 
-	-- Update snapshot with current state
 	LootFilter.takeBagSnapshot();
 
-	-- Start processing if we have items
 	if table.getn(LootFilterVars[LootFilter.REALMPLAYER].itemStack) > 0 then
 		LootFilter.LOOT_MAXTIME = GetTime() + LootFilter.LOOT_TIMEOUT;
 		if table.getn(LootFilter.timerArr) == 0 then
@@ -90,7 +81,6 @@ function LootFilter.processBagUpdate()
 end
 
 function LootFilter.OnEvent()
-	-- Handle BAG_UPDATE for loot bot mode
 	if (event == "BAG_UPDATE") then
 		if LootFilterVars[LootFilter.REALMPLAYER] and LootFilterVars[LootFilter.REALMPLAYER].lootbotmode and LootFilterVars[LootFilter.REALMPLAYER].enabled then
 			-- Skip BAG_UPDATE while a loot window is open; LOOT_OPENED handles those items
@@ -182,7 +172,6 @@ function LootFilter.OnEvent()
 		end;
 	end;
 	
-	-- record the items that are going to be looted, but only do it when caching is disabled (if its not its useless)
 	if (event == "LOOT_OPENED") and (LootFilterVars[LootFilter.REALMPLAYER].enabled) then
 		LootFilter.lootWindowOpen = true;
 		-- Take a snapshot before looting so BAG_UPDATE can detect what's new after the window closes
@@ -194,8 +183,7 @@ function LootFilter.OnEvent()
 			if (not LootSlotIsCoin(i)) then
 				local icon, name, quantity, quality= GetLootSlotInfo(i);
 				if (icon ~= nil) then
-					-- initialize item and push it on the stack
-					local item = LootFilter.getBasicItemInfo(GetLootSlotLink(i));
+						local item = LootFilter.getBasicItemInfo(GetLootSlotLink(i));
 					if (item ~= nil) then
 						LootFilter.debug("|cff44ff44[LOOT]|r Loot window item: " .. tostring(item["name"]) .. " (id=" .. tostring(item["id"]) .. ") " .. tostring(item["link"]));
 						if (not LootFilterVars[LootFilter.REALMPLAYER].caching) then
@@ -212,7 +200,6 @@ function LootFilter.OnEvent()
 		end;
 	end;
 
-	-- start processing the items we have just looted
 	if (event == "LOOT_CLOSED") and (LootFilterVars[LootFilter.REALMPLAYER].enabled) then
 		LootFilter.lootWindowOpen = false;
 		if LootFilterVars[LootFilter.REALMPLAYER].lootbotmode then
@@ -362,7 +349,6 @@ function LootFilter.OnEvent()
 				LootFilterVars[LootFilter.REALMPLAYER].lootbotmode = false;
 			end;
 
-			-- Take initial bag snapshot for loot bot mode
 			LootFilter.takeBagSnapshot();
 
 			LootFilterButtonGeneral:LockHighlight();
@@ -411,7 +397,7 @@ function LootFilter.OnLoad()
 	this:RegisterEvent("CHAT_MSG_ADDON");
 	this:RegisterEvent("RAID_ROSTER_UPDATE");
 	this:RegisterEvent("VARIABLES_LOADED");
-	this:RegisterEvent("BAG_UPDATE"); -- For loot bot compatibility
+	this:RegisterEvent("BAG_UPDATE");
 	LootFilter.newVersion = LootFilter.VERSION;
 	LootFilter.schedule(5, LootFilter.sendAddonMessage, "VERSION:"..LootFilter.newVersion, 1);
 end;

@@ -13,9 +13,8 @@ function LootFilter.schedule(delay, func, ...)
 end
 
 local function Scheduler(errorHandler)
---	seterrorhandler(errorHandler()); -- Use the parent's error handler
-	local addon = LootFilter; -- Bind to a local variable to reduce lookup times
-	local StartTime, MaxTime = 0, .005; -- Started current object, amount of time per frame to spend processing events
+	local addon = LootFilter;
+	local StartTime, MaxTime = 0, .005;
 	local function Yield(force)
 		if force or (StartTime + MaxTime) > GetTime() then
 			coroutine.yield();
@@ -49,9 +48,6 @@ function OnUpdate(...)
 		Schedule = coroutine.wrap(Scheduler);
 	end
 	xpcall(Schedule, geterrorhandler())
---[[	if not good then -- An error occured in the scheduler coroutine. Call default error handler
-		error("LootFilter: Error in Schedule coroutine: " .. msg, 2);
-	end --]]
 end
 
 ScheduleFrame:SetScript("OnUpdate", OnUpdate);

@@ -2,11 +2,7 @@ function LootFilter.matchProperties(key, value, item, keep)
 	local reason = "";
 	_, _, item["rarity"], _, _, item["type"], item["subType"], _ = GetItemInfo(item["id"]);
 	
---[[	if (LootFilter.openItemIfContainer(item)) then -- check if this is a container item we need to open
-		return LootFilter.Locale.LocText["LTTryopen"];
-	end; --]]
-	
-	if (string.match(key, "^QU")) then -- quality entry
+	if (string.match(key, "^QU")) then
 		LootFilter.debug("|cff00ffff[MATCH]|r Quality check: key=" .. tostring(key) .. " ruleValue=" .. tostring(value) .. " itemRarity=" .. tostring(item["rarity"]));
 		if (item["rarity"] == value) then
 			reason = LootFilter.Locale.LocText["LTQualMatched"].." ("..value..")";
@@ -15,13 +11,13 @@ function LootFilter.matchProperties(key, value, item, keep)
 				reason = LootFilter.Locale.LocText["LTQuestItem"];
 			end;
 		end;
-	elseif (string.match(key, "^TY")) then -- type entry
+	elseif (string.match(key, "^TY")) then
 
 		if (string.match(key, "^TY"..item["type"])) and (item["subType"] == value) then
 			
 			reason = LootFilter.Locale.LocText["LTTypeMatched"].." ("..value..")";
 		end;
-	elseif (string.match(key, "^VA")) then -- value entry
+	elseif (string.match(key, "^VA")) then
 		if (GetSellValue) and (LootFilterVars[LootFilter.REALMPLAYER].novalue) and ((item["value"] == nil) or (item["value"] <= 0)) then
 			reason = LootFilter.Locale.LocText["LTNoKnownValue"];
 		elseif (GetSellValue) then
@@ -56,11 +52,10 @@ function LootFilter.matchProperties(key, value, item, keep)
 	return reason;	
 end;
 
--- match properties of item against keep properties that have been configured by the user
 function LootFilter.matchKeepProperties(item)
 	local reason = "";
 
-	for key, value in pairs(LootFilterVars[LootFilter.REALMPLAYER].keepList) do -- cycle through the keep list
+	for key, value in pairs(LootFilterVars[LootFilter.REALMPLAYER].keepList) do
 		reason = LootFilter.matchProperties(key, value, item, true);
 		if (reason ~= "") then
 			return reason;
@@ -69,7 +64,6 @@ function LootFilter.matchKeepProperties(item)
 	return reason;
 end;
 
--- match properties of item against delete properties that have been configured by the user
 function LootFilter.matchDeleteProperties(item)
 	local reason = "";
 	for key,value in pairs(LootFilterVars[LootFilter.REALMPLAYER].deleteList) do
@@ -82,7 +76,6 @@ function LootFilter.matchDeleteProperties(item)
 end;
 
 
--- scan bags for the item and return x (bag), y (slot)
 function LootFilter.findItemInBags(item)
 	local x, y;
 	local containerItem = {};
@@ -91,7 +84,7 @@ function LootFilter.findItemInBags(item)
 	item["count"] = 0;
 	
 	for j=0 , 4 , 1 do
-		if (LootFilterVars[LootFilter.REALMPLAYER].openbag[j]) then -- only search this bag if it has been selected
+		if (LootFilterVars[LootFilter.REALMPLAYER].openbag[j]) then
 			x = GetContainerNumSlots(j);
 			for i=1 , x , 1 do
 				containerItem["link"]= GetContainerItemLink(j,i);
@@ -104,7 +97,6 @@ function LootFilter.findItemInBags(item)
 							item["slot"] = i;
 							LootFilter.debug("|cff00ffff[FIND]|r Found \"" .. tostring(item["name"]) .. "\" in bag=" .. j .. " slot=" .. i);
 							return item;
-							-- item["count"] = item["count"] + 1;
 						end;
 					end;
 				end;
@@ -115,7 +107,6 @@ function LootFilter.findItemInBags(item)
 	return item;
 end;
 
--- match item names (case insensitive)
 function LootFilter.matchItemNames(item, searchName)
 	if (item["name"] == nil) or (searchName == nil) then
 		return false;

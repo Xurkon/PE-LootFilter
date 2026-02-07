@@ -24,7 +24,6 @@ function LootFilter.report(value)
 	end;
 end;
 
--- i hate lua
 function LootFilter.tcount(table)
 	local n=0;
 	for _ in pairs(table) do
@@ -47,7 +46,6 @@ function LootFilter.trim(name)
 	return string.gsub(name, "LootFilter", "");	
 end;
 
--- borrowed from Informant (local function)
 function LootFilter.split(str, at)
 	if (not (type(str) == "string")) then
 		return

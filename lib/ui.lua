@@ -343,12 +343,12 @@ function LootFilter.SelectDropDown_Initialize()
 		if (key ~= LootFilter.REALMPLAYER and key:find("%s -") ~= nil) then
 			local info = UIDropDownMenu_CreateInfo(); 
 
-			info.text = key; --the text of the'menu item 
-			info.value = i; -- the value of the menu item. This can be a string also. 
-			info.func = LootFilter.SelectDropDown_OnClick; --sets the function to execute when this item is clicked 
-			info.owner = this:GetParent(); --binds the drop down menu as the parent of the menu item. This is very important for dynamic drop down menues. 
-			info.checked = nil; --initially set the menu item to being unchecked with a yellow tick 
-			info.icon = nil; --we can use this to set an icon for the drop down menu item to accompany the text 
+			info.text = key;
+			info.value = i;
+			info.func = LootFilter.SelectDropDown_OnClick;
+			info.owner = this:GetParent();
+			info.checked = nil;
+			info.icon = nil;
 			UIDropDownMenu_AddButton(info, level);
 
 			if (UIDropDownMenu_GetSelectedValue(LootFilterSelectDropDown) == nil) then
@@ -369,41 +369,18 @@ function LootFilter.SelectDropDownType_OnClick()
 end;
 
 
---[[
-Menu Bug
-	Error report:
-		Error occured in: Global
-		Count: 1
-	Message:
-		..\FrameXML\UIDropDownMenu.lua line 216: attempt to index local 'listFrame' (a nil value)
-	Stack trace:
-		(tail call): ?
-		[C]: ?
-		..\FrameXML\UIDropDownMenu.lua:216: UIDropDownMenu_AddButton()
-		LootFilter\lib\ui.lua:405: initFunction()
-		..\FrameXML\UIDropDownMenu.lua:69: UIDropDownMenu_Initialize()
-		..\FrameXML\UIDropDownMenu.lua:713:
-		..\FrameXML\UIDropDownMenu.lua:574
-		[C]: ToggleDropDownMenu()
-		[string "*:OnClick"]:1:
-		[string "*:OnClick"]:1 
-
-
-UIDropDownMenu_Initialize(self, LootFilter.SelectDropDownType_Initialize);
---]]
-
 function LootFilter.SelectDropDownType_Initialize()
 	local i = 1;
 	
 	for key, value in LootFilter.sortedPairs(LootFilter.Locale.types) do
 		local info = UIDropDownMenu_CreateInfo(); 
 
-		info.text = value; --the text of the'menu item 
-		info.value = i; -- the value of the menu item. This can be a string also. 
-		info.func = LootFilter.SelectDropDownType_OnClick; --sets the function to execute when this item is clicked 
-		info.owner = this:GetParent(); --binds the drop down menu as the parent of the menu item. This is very important for dynamic drop down menues. 
-		info.checked = nil; --initially set the menu item to being unchecked with a yellow tick 
-		info.icon = nil; --we can use this to set an icon for the drop down menu item to accompany the text 
+		info.text = value;
+		info.value = i;
+		info.func = LootFilter.SelectDropDownType_OnClick;
+		info.owner = this:GetParent();
+		info.checked = nil;
+		info.icon = nil;
 		UIDropDownMenu_AddButton(info, level);
 
 		if (UIDropDownMenu_GetSelectedValue(LootFilterSelectDropDownType) == nil) then
@@ -433,12 +410,12 @@ function LootFilter.SelectDropDownCalculate_Initialize()
 	for key, value in LootFilter.sortedPairs(text) do
 		local info = UIDropDownMenu_CreateInfo(); 
 
-		info.text = value; --the text of the'menu item 
-		info.value = i; -- the value of the menu item. This can be a string also. 
-		info.func = LootFilter.SelectDropDownCalculate_OnClick; --sets the function to execute when this item is clicked 
-		info.owner = this:GetParent(); --binds the drop down menu as the parent of the menu item. This is very important for dynamic drop down menues. 
-		info.checked = nil; --initially set the menu item to being unchecked with a yellow tick 
-		info.icon = nil; --we can use this to set an icon for the drop down menu item to accompany the text 
+		info.text = value;
+		info.value = i;
+		info.func = LootFilter.SelectDropDownCalculate_OnClick;
+		info.owner = this:GetParent();
+		info.checked = nil;
+		info.icon = nil;
 		UIDropDownMenu_AddButton(info, level);
 
 		if (LootFilterVars[LootFilter.REALMPLAYER].calculate == i) then
@@ -474,7 +451,7 @@ function LootFilter.checkDependencies()
 		LootFilterButtonReset:Show();
 		
 		LootFilterNeedAddon:Hide();
-		if (((AucAdvanced) and (AucAdvanced.API) and (AucAdvanced.API.GetMarketValue))) then -- Auctioneer advanced
+		if (((AucAdvanced) and (AucAdvanced.API) and (AucAdvanced.API.GetMarketValue))) then
 			LootFilterOPMarketValue:Show();
 			LootFilter.marketValue = true;
 		end;		
@@ -504,7 +481,6 @@ function LootFilter.sortedPairs(t,comparator)
 	return _f,nil,nil;
 end
 
--- type tab, don't forget to sort, lua is stupid that way
 function LootFilter.initTypeTab()
 	
 	for key, typeName in LootFilter.sortedPairs(LootFilter.Locale.types) do

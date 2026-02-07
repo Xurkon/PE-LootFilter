@@ -1,8 +1,6 @@
 ## Interface: 30300
 ## Title: Loot Filter
 ## Notes: Filter items you get from looting
-## Author: meter@lootfilter.com, tweak@lootfilter.com
-## URL: http://www.lootfilter.com
 ## SavedVariables: LootFilterVars
 ## X-Version: 1.0.2
 

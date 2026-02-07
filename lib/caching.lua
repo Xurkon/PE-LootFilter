@@ -20,7 +20,7 @@ function LootFilter.processCaching()
 	if LootFilter.inDialog then
 		return;
 	end
-	if (GetTime() > LootFilter.LOOT_MAXTIME) then -- if we have exceded maxtime quit and clear the stack
+	if (GetTime() > LootFilter.LOOT_MAXTIME) then
 		return;
 	end;
 			

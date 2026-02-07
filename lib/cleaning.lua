@@ -3,13 +3,12 @@ function LootFilter.sortByLink(a, b)
 	return string.lower(a["name"]) < string.lower(b["name"]);
 end;
 
-function LootFilter.processCleaning() -- display the cleanList in the Clean tab
+function LootFilter.processCleaning()
 	LootFilterButtonDeleteItems:Disable();
 	LootFilterButtonIWantTo:Disable();
 	LootFilter.constructCleanList();
 	local totalValue = LootFilter.calculateCleanListValue()
 	if (totalValue > 0) then
-		-- Copied from Quick Repair
 		totalValue = LootFilter.round(totalValue * 10000);
 		
 		LootFilterTextCleanTotalValue:SetText(LootFilter.Locale.LocText["LTTotalValue"]..": "..string.format("|c00FFFF66 %2dg" , totalValue / 10000)..string.format("|c00C0C0C0 %2ds" , string.sub(totalValue,-4)/100)..string.format("|c00CC9900 %2dc" , string.sub(totalValue,-2)));
@@ -28,7 +27,7 @@ function LootFilter.processCleaning() -- display the cleanList in the Clean tab
 	end;	
 end;
 
-function LootFilter.showItemTooltip(frame) -- show itemTooltip
+function LootFilter.showItemTooltip(frame)
 	local fontString = getglobal("cleanLine"..string.match(frame:GetName(), "(%d+)"));
 	local value = fontString:GetText();
 	if (LootFilter.cleanList ~= nil) and (table.getn(LootFilter.cleanList) > 0) and (value ~= nil) and (value ~= "") then
@@ -42,7 +41,7 @@ function LootFilter.showItemTooltip(frame) -- show itemTooltip
 	end;
 end;
 
-function LootFilter.addItemToKeepList(frame) -- add items to the keep list if user shift-clicks
+function LootFilter.addItemToKeepList(frame)
 	local fontString = getglobal("cleanLine"..string.match(frame:GetName(), "(%d+)"));
 	local value = fontString:GetText();
 	if (value ~= nil) and (value ~= "") then
