@@ -145,7 +145,7 @@ end;
 function LootFilter.findItemWithLock()
 	for j=0 , 4 , 1 do
 		local x = GetContainerNumSlots(j);
-		for i=0 , x , 1 do
+		for i=1 , x , 1 do
 			local _, _, locked = GetContainerItemInfo(j,i);
 			if (locked) then
 				local itemlink= GetContainerItemLink(j,i);

@@ -90,7 +90,7 @@ function LootFilter.findItemInBags(item)
 	for j=0 , 4 , 1 do
 		if (LootFilterVars[LootFilter.REALMPLAYER].openbag[j]) then -- only search this bag if it has been selected
 			x = GetContainerNumSlots(j);
-			for i=0 , x , 1 do
+			for i=1 , x , 1 do
 				containerItem["link"]= GetContainerItemLink(j,i);
 				if (containerItem["link"] ~= nil) then
 					containerItem["name"] = LootFilter.getNameOfItem(containerItem["link"]);
