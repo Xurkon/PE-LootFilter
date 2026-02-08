@@ -214,20 +214,20 @@ end;
 
 function LootFilter.setItemValue()
 	local value= tonumber(LootFilterEditBox3:GetText());
-	if (value == nil) or (value == "") then
-		value= "0";
+	if (value == nil) then
+		value= 0;
 	end;
 	LootFilterVars[LootFilter.REALMPLAYER].deleteList["VAValue"]= value;
 
-	local value= tonumber(LootFilterEditBox4:GetText());
-	if (value == nil) or (value == "") then
-		value= "0";
+	value= tonumber(LootFilterEditBox4:GetText());
+	if (value == nil) then
+		value= 0;
 	end;
 	LootFilterVars[LootFilter.REALMPLAYER].keepList["VAValue"]= value;
 
-	local value= tonumber(LootFilterEditBox5:GetText());
-	if (value == nil) or (value == "") then
-		value= "0";
+	value= tonumber(LootFilterEditBox5:GetText());
+	if (value == nil) then
+		value= 0;
 	end;
 	LootFilterVars[LootFilter.REALMPLAYER].freebagslots= value;
 end;
