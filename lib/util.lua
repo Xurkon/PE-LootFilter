@@ -191,9 +191,20 @@ function LootFilter.calculateCleanListValue()
 	return totalValue;
 end;
 
+function LootFilter.deepCopy(orig)
+	if type(orig) ~= "table" then
+		return orig;
+	end
+	local copy = {};
+	for k, v in pairs(orig) do
+		copy[k] = LootFilter.deepCopy(v);
+	end
+	return copy;
+end
+
 function LootFilter.copySettings()
 	local realmPlayer = UIDropDownMenu_GetText(LootFilterSelectDropDown);
-	LootFilterVars[LootFilter.REALMPLAYER] = LootFilterVars[realmPlayer];
+	LootFilterVars[LootFilter.REALMPLAYER] = LootFilter.deepCopy(LootFilterVars[realmPlayer]);
 	LootFilter.getNames();
 	LootFilter.getNamesDelete();
 	LootFilter.getItemValue();
