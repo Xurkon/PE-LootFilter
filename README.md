@@ -1,8 +1,19 @@
 LOOT FILTER - PROJECT EBONHOLD - WoW WotLK 3.3.5a
 =====================================
-(The code is modified using AI so I don't take credit for it)
+> **IMPORTANT:** If you get errors after updating this addon, it may be because
+> old saved variables are in an outdated format. To fix this, delete (or move as
+> a backup) `LootFilter.lua` and `LootFilter.lua.bak` from:
+> `<WoW directory>\WTF\Account\<account ID>\<realm>\<character>\SavedVariables\`
 
 A rewrite of the classic LootFilter addon, now compatible with the Scavenger companion (works fine without it too).
+
+
+INSTALLATION
+------------
+Place the addon folder in your WoW AddOns directory. The folder **must** be
+named `LootFilter` (matching the .toc file):
+
+  `<WoW directory>\Interface\AddOns\LootFilter\`
 Biggest difference to the default addon is that we added a function for GetSellValue API instead of relying on a separate addon, this allows the addon to filter items based on vendor price.
 
 What the addon does:
@@ -92,7 +103,6 @@ VALUE FILTERING
 Set gold thresholds (0.1 = 10 silver):
   - Delete items worth less than X gold
   - Keep items worth more than X gold
-
 
 CREDITS
 -------
