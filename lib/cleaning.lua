@@ -9,7 +9,7 @@ function LootFilter.processCleaning()
 	LootFilter.constructCleanList();
 	local totalValue = LootFilter.calculateCleanListValue()
 	if (totalValue > 0) then
-		totalValue = LootFilter.round(totalValue * 10000);
+		totalValue = LootFilter.round(totalValue);
 		
 		LootFilterTextCleanTotalValue:SetText(LootFilter.Locale.LocText["LTTotalValue"]..": "..string.format("|c00FFFF66 %2dg" , totalValue / 10000)..string.format("|c00C0C0C0 %2ds" , string.sub(totalValue,-4)/100)..string.format("|c00CC9900 %2dc" , string.sub(totalValue,-2)));
 	else 

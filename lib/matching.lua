@@ -29,12 +29,12 @@ function LootFilter.matchProperties(key, value, item, keep)
 				calculatedValue = tonumber(item["value"] * item["stack"]);
 			end;
 			if (keep) and (LootFilterVars[LootFilter.REALMPLAYER].keepList["VAOn"]) then
-				if (calculatedValue > tonumber(LootFilterVars[LootFilter.REALMPLAYER].keepList["VAValue"])) then
-					reason = LootFilter.Locale.LocText["LTValueHighEnough"] .. " (" .. calculatedValue .. ")";
+				if (calculatedValue > tonumber(LootFilterVars[LootFilter.REALMPLAYER].keepList["VAValue"]) * 10000) then
+					reason = LootFilter.Locale.LocText["LTValueHighEnough"] .. " (" .. calculatedValue / 10000 .. ")";
 				end;
 			elseif (not keep) and ((LootFilterVars[LootFilter.REALMPLAYER].deleteList["VAOn"])) then
-				if (calculatedValue < tonumber(LootFilterVars[LootFilter.REALMPLAYER].deleteList["VAValue"])) then
-					reason = LootFilter.Locale.LocText["LTValueNotHighEnough"] .. " (" .. calculatedValue .. ")";
+				if (calculatedValue < tonumber(LootFilterVars[LootFilter.REALMPLAYER].deleteList["VAValue"]) * 10000) then
+					reason = LootFilter.Locale.LocText["LTValueNotHighEnough"] .. " (" .. calculatedValue / 10000 .. ")";
 				end;
 			end;
 		end;
@@ -146,33 +146,34 @@ function LootFilter.matchItemNames(item, searchName)
 	if (item["name"] == nil) or (searchName == nil) then
 		return false;
 	end;
-	local oldErr = geterrorhandler();
-	local errH = function(msg)
-		seterrorhandler(oldErr);
-		error(
-		string.format("Error: %s. searchName: %s item[\"name\"]: %s.", tostring(searchName), tostring(item["name"])), 3);
-	end;
-	seterrorhandler(errH);
 
 	local comment;
 	searchName, comment = LootFilter.stripComment(searchName);
 
 	if (string.find(searchName, "##", 1, true) == 1) then
 		if (item["info"] ~= nil) then
-			if (string.find(string.lower(item["info"]), string.lower(string.sub(searchName, 3)))) then
-				seterrorhandler(oldErr);
+			local pattern = string.lower(string.sub(searchName, 3));
+			local ok, result = pcall(string.find, string.lower(item["info"]), pattern);
+			if (not ok) then
+				LootFilter.debug("Bad pattern in ##: " .. tostring(pattern));
+				return false;
+			end;
+			if (result) then
 				return true;
 			end;
 		end;
 	elseif (string.find(searchName, "#", 1, true) == 1) then
-		if (string.find(string.lower(item["name"]), string.lower(string.sub(searchName, 2)))) then
-			seterrorhandler(oldErr);
+		local pattern = string.lower(string.sub(searchName, 2));
+		local ok, result = pcall(string.find, string.lower(item["name"]), pattern);
+		if (not ok) then
+			LootFilter.debug("Bad pattern in #: " .. tostring(pattern));
+			return false;
+		end;
+		if (result) then
 			return true;
 		end;
 	elseif (string.lower(item["name"]) == string.lower(searchName)) then
-		seterrorhandler(oldErr);
 		return true;
 	end;
-	seterrorhandler(oldErr);
 	return false;
 end;

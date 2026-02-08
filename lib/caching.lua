@@ -1,18 +1,18 @@
 function LootFilter.sortByValue(a, b)
 	if ( not a ) then return true;	elseif ( not b ) then return false; end
-	
-	if (LootFilterVars[LootFilter.REALMPLAYER].calculate == 1) then
-		a = tonumber(a["value"]);
-		b = tonumber(b["value"]);
-	elseif (LootFilterVars[LootFilter.REALMPLAYER].calculate == 2) then
-		a = tonumber(a["value"]*a["amount"]);
-		b = tonumber(b["value"]*b["amount"]);
-	else
-		a = tonumber(a["value"]*a["stack"]);
-		b = tonumber(b["value"]*b["stack"]);
-	end;	
-	
-	return tonumber(a) < tonumber(b);
+
+	local aVal = a["value"] or math.huge;
+	local bVal = b["value"] or math.huge;
+
+	if (LootFilterVars[LootFilter.REALMPLAYER].calculate == 2) then
+		aVal = aVal * (a["amount"] or 1);
+		bVal = bVal * (b["amount"] or 1);
+	elseif (LootFilterVars[LootFilter.REALMPLAYER].calculate ~= 1) then
+		aVal = aVal * (a["stack"] or 1);
+		bVal = bVal * (b["stack"] or 1);
+	end;
+
+	return aVal < bVal;
 end;
 
 
@@ -34,7 +34,7 @@ function LootFilter.processCaching()
 		if (LootFilter.deleteItemFromBag(LootFilter.cleanList[1])) then
 			local calculatedValue;
 			if (LootFilter.cleanList[1]["value"] < 0) then -- item matched a delete property
-				LootFilter.cleanList[1]["value"]  = LootFilter.round(LootFilter.cleanList[1]["value"] + 1000, 4); -- restore its original value and use our rounding because blizzard/lua cant calculate properly
+				LootFilter.cleanList[1]["value"]  = LootFilter.cleanList[1]["value"] + 10000000; -- restore its original value
 			end;
 			if (LootFilterVars[LootFilter.REALMPLAYER].calculate == 1) then
 				calculatedValue = tonumber(LootFilter.cleanList[1]["value"]);
@@ -43,7 +43,7 @@ function LootFilter.processCaching()
 			else
 				calculatedValue = tonumber(LootFilter.cleanList[1]["value"]*LootFilter.cleanList[1]["stack"]);
 			end;
-			LootFilter.print(LootFilter.cleanList[1]["link"].." "..LootFilter.Locale.LocText["LTWasDeleted"]..": "..LootFilter.Locale.LocText["LTItemLowestValue"].." ("..calculatedValue..")");
+			LootFilter.print(LootFilter.cleanList[1]["link"].." "..LootFilter.Locale.LocText["LTWasDeleted"]..": "..LootFilter.Locale.LocText["LTItemLowestValue"].." ("..calculatedValue / 10000 ..")");
 			table.remove(LootFilter.cleanList, 1);
 		end;
 		LootFilter.schedule(LootFilter.LOOT_PARSE_DELAY, LootFilter.processCaching);				
@@ -90,11 +90,18 @@ function LootFilter.deleteItems(timeout, delete)
 			end;
 						
 			
+			local currentLink = GetContainerItemLink(item["bag"], item["slot"]);
+			if (currentLink ~= item["link"]) then
+				LootFilter.debug("Skipped stale slot: expected " .. tostring(item["link"]) .. " at bag=" .. item["bag"] .. " slot=" .. item["slot"]);
+				LootFilter.schedule(LootFilter.SELL_INTERVAL, LootFilter.deleteItems, GetTime()+LootFilter.SELL_TIMEOUT, false);
+				return;
+			end;
+
 			UseContainerItem(item["bag"], item["slot"]);
 			if (LootFilter.questUpdateToggle == 1) then
-				LootFilter.lastDeleted = item["name"]; 
+				LootFilter.lastDeleted = item["name"];
 			end;
-			
+
 			-- give the client time to actually sell the item
 			LootFilter.schedule(LootFilter.SELL_INTERVAL, LootFilter.checkIfItemSold, GetTime()+LootFilter.SELL_ITEM_TIMEOUT, item);
 			

@@ -16,7 +16,7 @@ function LootFilter.confirmDelete(item)
 					LootFilter.schedule(LootFilter.LOOT_PARSE_DELAY, LootFilter.processItemStack);
 				end;
 			end,
-			OnAccept = function(data)
+			OnAccept = function(self, data)
 				if not CursorHasItem() then
 					if not data["bag"] or not data["slot"] then
 						geterrorhandler(("Invalid item position. %s, %s, %s"):format(tostring(data["name"]), tostring(data["bag"]), tostring(data["slot"])));
@@ -26,10 +26,10 @@ function LootFilter.confirmDelete(item)
 				end
 				DeleteCursorItem();
 			end,
-			OnCancel = function (data)
+			OnCancel = function (self, data)
 				ClearCursor();
 			end,
-			OnUpdate = function (data)
+			OnUpdate = function (self)
 				if ( not CursorHasItem() ) then
 					StaticPopup_Hide("DELETE_ITEM");
 				end
@@ -108,10 +108,6 @@ function LootFilter.getValueOfItem(item)
 		itemValue = itemValueAuctioneer;
 	end;
 	
-	if (itemValue ~= 0) then
-		itemValue = tonumber(itemValue/10000);
-	end;
-
 	return itemValue;	
 end;
 

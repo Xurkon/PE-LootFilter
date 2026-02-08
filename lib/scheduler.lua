@@ -13,6 +13,7 @@ function LootFilter.schedule(delay, func, ...)
 end
 
 local function Scheduler(errorHandler)
+	errorHandler = errorHandler or geterrorhandler();
 	local addon = LootFilter;
 	local StartTime, MaxTime = 0, .005;
 	local function Yield(force)
@@ -29,12 +30,19 @@ local function Scheduler(errorHandler)
 		if table.getn(stack) > 0 then
 			event = stack[1];
 			if event.Time < StartTime then
-				if type(event.Func) == "function" then
-					event.Func(unpack(event.Args));
-				elseif type(event.Func) == "string" then
-					addon[event.Func](unpack(event.Args));
-				end
+				-- Remove first so one bad task cannot poison the queue forever.
 				table.remove(stack, 1);
+				if type(event.Func) == "function" then
+					xpcall(function()
+						event.Func(unpack(event.Args));
+					end, errorHandler);
+				elseif type(event.Func) == "string" and type(addon[event.Func]) == "function" then
+					xpcall(function()
+						addon[event.Func](unpack(event.Args));
+					end, errorHandler);
+				else
+					errorHandler("LootFilter.schedule: invalid scheduled function");
+				end
 			end
 			Yield();
 		else
@@ -43,11 +51,15 @@ local function Scheduler(errorHandler)
 	end
 end
 
-function OnUpdate(...)
+local function OnUpdate(...)
 	if not Schedule then
 		Schedule = coroutine.wrap(Scheduler);
 	end
-	xpcall(Schedule, geterrorhandler())
+	local ok = xpcall(Schedule, geterrorhandler())
+	if not ok then
+		-- Coroutine is dead after an error; reset so it can be recreated next frame
+		Schedule = nil;
+	end
 end
 
 ScheduleFrame:SetScript("OnUpdate", OnUpdate);

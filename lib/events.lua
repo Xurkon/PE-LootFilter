@@ -219,7 +219,7 @@ function LootFilter.OnEvent()
 
 	if (event == "ITEM_LOCK_CHANGED") then
 		if (LootFilter.hasFocus > 0) then
-			itemName= LootFilter.findItemWithLock();
+			local itemName= LootFilter.findItemWithLock();
 			if (itemName ~= nil) and (itemName ~= "") then
 				if (LootFilter.hasFocus == 1) then
 					LootFilterEditBox1:SetText(LootFilterEditBox1:GetText()..itemName.."\n");
