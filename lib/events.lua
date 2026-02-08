@@ -265,7 +265,9 @@ function LootFilter.OnEvent()
 				LootFilterVars[LootFilter.REALMPLAYER].keepList= {};
 			end;
 			if (LootFilterVars[LootFilter.REALMPLAYER].keepList["names"] == nil) then
-				LootFilterVars[LootFilter.REALMPLAYER].keepList["names"] = {};
+				LootFilterVars[LootFilter.REALMPLAYER].keepList["names"] = {
+					"Hearthstone",
+				};
 			end;
 			if (LootFilterVars[LootFilter.REALMPLAYER].deleteList == nil) then
 				LootFilterVars[LootFilter.REALMPLAYER].deleteList= {};
