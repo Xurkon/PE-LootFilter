@@ -146,33 +146,34 @@ function LootFilter.matchItemNames(item, searchName)
 	if (item["name"] == nil) or (searchName == nil) then
 		return false;
 	end;
-	local oldErr = geterrorhandler();
-	local errH = function(msg)
-		seterrorhandler(oldErr);
-		error(
-		string.format("Error: %s. searchName: %s item[\"name\"]: %s.", tostring(searchName), tostring(item["name"])), 3);
-	end;
-	seterrorhandler(errH);
 
 	local comment;
 	searchName, comment = LootFilter.stripComment(searchName);
 
 	if (string.find(searchName, "##", 1, true) == 1) then
 		if (item["info"] ~= nil) then
-			if (string.find(string.lower(item["info"]), string.lower(string.sub(searchName, 3)))) then
-				seterrorhandler(oldErr);
+			local pattern = string.lower(string.sub(searchName, 3));
+			local ok, result = pcall(string.find, string.lower(item["info"]), pattern);
+			if (not ok) then
+				LootFilter.debug("Bad pattern in ##: " .. tostring(pattern));
+				return false;
+			end;
+			if (result) then
 				return true;
 			end;
 		end;
 	elseif (string.find(searchName, "#", 1, true) == 1) then
-		if (string.find(string.lower(item["name"]), string.lower(string.sub(searchName, 2)))) then
-			seterrorhandler(oldErr);
+		local pattern = string.lower(string.sub(searchName, 2));
+		local ok, result = pcall(string.find, string.lower(item["name"]), pattern);
+		if (not ok) then
+			LootFilter.debug("Bad pattern in #: " .. tostring(pattern));
+			return false;
+		end;
+		if (result) then
 			return true;
 		end;
 	elseif (string.lower(item["name"]) == string.lower(searchName)) then
-		seterrorhandler(oldErr);
 		return true;
 	end;
-	seterrorhandler(oldErr);
 	return false;
 end;
