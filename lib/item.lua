@@ -58,8 +58,7 @@ function LootFilter.deleteItemFromBag(item)
 			if hasItem then
 				DeleteCursorItem();
 			end
-			local myTime = GetTime();
-			return true;
+			return hasItem;
 		end
 	end;
 	return false;
