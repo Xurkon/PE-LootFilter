@@ -20,6 +20,7 @@ if ( GetLocale() == "deDE" ) then
 			["Consumables"] = "Verbrauchsmaterial",
 			["Containers"] = "Beh\195\164lter",
 			["Gems"] = "Edelsteine",
+			["Glyphs"] = "Glyphe",
 			["Key"] = "Schl\195\188ssel",
 			["Miscellaneous"] = "Verschiedenes",
 			["Projectile"] = "Projektile",
@@ -89,6 +90,10 @@ if ( GetLocale() == "deDE" ) then
 			["TYGemRed"] = "Rot",
 			["TYGemSimple"] = "Simple",
 			["TYGemYellow"] = "Gelb",
+
+			-- Glyph
+			["TYGlyphMajor Glyph"] = "Erhebliche Glyphe",
+			["TYGlyphMinor Glyph"] = "Geringe Glyphe",
 
 			-- Key
 			["TYKeyKey"] = "Schl\195\188ssel",

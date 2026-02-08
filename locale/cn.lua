@@ -19,6 +19,7 @@ if ( GetLocale() == "zhCN" ) then
 			["Consumables"] = "消耗品",
 			["Containers"] = "容器",
 			["Gems"] = "宝石",
+			["Glyphs"] = "雕文",
 			["Key"] = "钥匙",
 			["Miscellaneous"] = "杂物",
 			["Projectile"] = "弹药",
@@ -90,6 +91,10 @@ if ( GetLocale() == "zhCN" ) then
 			["TYGemYellow"] = "黄色",
 			
 			
+			-- Glyph
+			["TYGlyphMajor Glyph"]= "大型雕文",
+			["TYGlyphMinor Glyph"]= "小型雕文",
+
 			-- Key
 			["TYKeyKey"]= "钥匙",
 			-- Projectile

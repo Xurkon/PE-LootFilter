@@ -19,6 +19,7 @@ LootFilter.Locale = {
 		["Consumables"] = "Consumable",
 		["Containers"] = "Container",
 		["Gems"] = "Gem",
+		["Glyphs"] = "Glyph",
 		["Key"] = "Key",
 		["Miscellaneous"] = "Miscellaneous",
 		["Projectile"] = "Projectile",
@@ -90,6 +91,10 @@ LootFilter.Locale = {
 			["TYGemYellow"] = "Jaune",
 			
 			
+			-- Glyph
+			["TYGlyphMajor Glyph"]= "Glyphe majeure",
+			["TYGlyphMinor Glyph"]= "Glyphe mineure",
+
 			-- Key
 			["TYKeyKey"]= "Clefs",
 			-- Projectile

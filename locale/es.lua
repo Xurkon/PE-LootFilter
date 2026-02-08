@@ -19,6 +19,7 @@ LootFilter.Locale = {
 		["Consumible"] = "Consumible",
 		["Contenedor"] = "Contenedor",
 		["Gema"] = "Gema",
+		["Glifo"] = "Glifo",
 		["Llave"] = "Llave",
 		["Miscel\195\161nea"] = "Miscel\195\161nea",
 		["Proyectil"] = "Proyectil",
@@ -91,6 +92,10 @@ LootFilter.Locale = {
 			["TYGemaAmarillo"] = "Amarillo",
 			
 			
+			-- Glifo
+			["TYGlyphMajor Glyph"]= "Glifo mayor",
+			["TYGlyphMinor Glyph"]= "Glifo menor",
+
 			-- Llave
 			["TYLlaveLlave"]= "Llave",
 			
