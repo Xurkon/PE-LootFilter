@@ -43,7 +43,7 @@ local function Scheduler(errorHandler)
 	end
 end
 
-function OnUpdate(...)
+local function OnUpdate(...)
 	if not Schedule then
 		Schedule = coroutine.wrap(Scheduler);
 	end

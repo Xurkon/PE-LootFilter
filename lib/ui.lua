@@ -299,7 +299,7 @@ function LootFilter.initClean()
 	LootFilterButtonDeleteItems:Enable();
 	LootFilterButtonIWantTo:Disable();
 	for line=1,19 do
-		cleanLine = getglobal("cleanLine"..line);
+		local cleanLine = getglobal("cleanLine"..line);
 		cleanLine:SetText("");
 		cleanLine:Hide();
 	end
@@ -485,7 +485,7 @@ function LootFilter.initTypeTab()
 	
 	for key, typeName in LootFilter.sortedPairs(LootFilter.Locale.types) do
 		local f = CreateFrame("Frame", "LootFilterDKDType"..typeName, LootFilterFrameType);
-		y = -100;
+		local y = -100;
 		for key2, subtypeName in LootFilter.sortedPairs(LootFilter.Locale.radioButtonsText) do
 			if (string.match(key2, "^TY"..typeName)) then
 				local g = CreateFrame("Frame","LootFilter"..key2, getglobal("LootFilterDKDType"..typeName), "LootFilterDKDOptionsTemplate");
