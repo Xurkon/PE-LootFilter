@@ -1,5 +1,6 @@
 function LootFilter.processItemStack()
 	if LootFilter.inDialog then
+		LootFilter.schedule(LootFilter.SCHEDULE_INTERVAL, LootFilter.processItemStack);
 		return;
 	end
 	if (table.getn(LootFilterVars[LootFilter.REALMPLAYER].itemStack) == 0) then

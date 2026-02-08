@@ -18,6 +18,7 @@ end;
 
 function LootFilter.processCaching()
 	if LootFilter.inDialog then
+		LootFilter.schedule(LootFilter.LOOT_PARSE_DELAY, LootFilter.processCaching);
 		return;
 	end
 	if (GetTime() > LootFilter.LOOT_MAXTIME) then
