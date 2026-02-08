@@ -90,11 +90,18 @@ function LootFilter.deleteItems(timeout, delete)
 			end;
 						
 			
+			local currentLink = GetContainerItemLink(item["bag"], item["slot"]);
+			if (currentLink ~= item["link"]) then
+				LootFilter.debug("Skipped stale slot: expected " .. tostring(item["link"]) .. " at bag=" .. item["bag"] .. " slot=" .. item["slot"]);
+				LootFilter.schedule(LootFilter.SELL_INTERVAL, LootFilter.deleteItems, GetTime()+LootFilter.SELL_TIMEOUT, false);
+				return;
+			end;
+
 			UseContainerItem(item["bag"], item["slot"]);
 			if (LootFilter.questUpdateToggle == 1) then
-				LootFilter.lastDeleted = item["name"]; 
+				LootFilter.lastDeleted = item["name"];
 			end;
-			
+
 			-- give the client time to actually sell the item
 			LootFilter.schedule(LootFilter.SELL_INTERVAL, LootFilter.checkIfItemSold, GetTime()+LootFilter.SELL_ITEM_TIMEOUT, item);
 			
