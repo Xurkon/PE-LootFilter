@@ -129,6 +129,8 @@ function LootFilter.command(cmd)
 	elseif (args[1] == "status") then
 		LootFilter.print("Loot Bot Mode: " ..
 		(LootFilterVars[LootFilter.REALMPLAYER].lootbotmode and "|cff00ff00ENABLED|r" or "|cffff0000DISABLED|r"));
+		LootFilter.print("Silence Mode: " ..
+		(LootFilterVars[LootFilter.REALMPLAYER].silent and "|cff00ff00ENABLED|r" or "|cffff0000DISABLED|r"));
 		LootFilter.print("Filtering: " ..
 		(LootFilterVars[LootFilter.REALMPLAYER].enabled and "|cff00ff00ENABLED|r" or "|cffff0000DISABLED|r"));
 		LootFilter.print("Debug Mode: " ..
@@ -140,6 +142,7 @@ function LootFilter.command(cmd)
 		LootFilter.print("  /lf - Toggle options window");
 		LootFilter.print(
 		"  /lf lootbot - Toggle loot bot mode (auto-filters items added to bags, e.g. from Scavenger companion)");
+		LootFilter.print("  /lf silence - Toggle silence mode (suppress filter chat messages)");
 		LootFilter.print("  /lf debug - Toggle debug mode (diagnostic output in chat)");
 		LootFilter.print("  /lf status - Show current status");
 		LootFilter.print("  /lf help - Show this help");
