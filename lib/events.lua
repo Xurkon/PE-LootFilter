@@ -56,6 +56,9 @@ function LootFilter.processBagUpdate()
 		LootFilter.debug("|cff44ff44[LOOTBOT]|r New item: " ..
 			tostring(item["name"]) ..
 			" (id=" .. tostring(item["id"]) .. ") bag=" .. tostring(item["bag"]) .. " slot=" .. tostring(item["slot"]));
+
+		LootFilter.AddQuestItemToKeepList(item);
+
 		table.insert(LootFilterVars[LootFilter.REALMPLAYER].itemStack, item);
 
 		if GetSellValue then
@@ -157,41 +160,14 @@ function LootFilter.OnEvent()
 			if (itemName ~= arg1) then
 				local item = {};
 				item["name"] = itemName;
-				for index, name in pairs(LootFilterVars[LootFilter.REALMPLAYER].keepList["names"]) do
-					if (LootFilter.matchItemNames(item, name)) then
-						return;
-					end;
-				end;
-
 				for index, item in pairs(LootFilterVars[LootFilter.REALMPLAYER].itemStack) do
 					local name = item["name"];
-					if (string.lower(name) == string.lower(itemName)) then
+					local cleanName = LootFilter.SanitizeName(name);
+					local cleanItemName = LootFilter.SanitizeName(itemName);
+
+					if (cleanName == cleanItemName) then
 						table.remove(LootFilterVars[LootFilter.REALMPLAYER].itemStack, index);
-						if (LootFilterVars[LootFilter.REALMPLAYER].notifykeep) and (not LootFilterVars[LootFilter.REALMPLAYER].silent) then
-							LootFilter.print(item["link"] ..
-								" " .. LootFilter.Locale.LocText["LTKept"] .. ": " ..
-								LootFilter.Locale.LocText["LTQuestItem"]);
-						end;
-						if (item["itemType"] ~= LootFilter.Locale.LocText["LTQuest"]) and (item["itemSubType"] ~= LootFilter.Locale.LocText["LTQuest"]) then
-							-- Check for duplicates before adding
-							local alreadyExists = false;
-							local cleanItemName = LootFilter.SanitizeName(itemName);
-
-							for k, v in pairs(LootFilterVars[LootFilter.REALMPLAYER].keepList["names"]) do
-								local existingName = LootFilter.stripComment(v);
-								local cleanExistingName = LootFilter.SanitizeName(existingName);
-
-								if (cleanExistingName == cleanItemName) then
-									alreadyExists = true;
-									break;
-								end;
-							end;
-
-							if (not alreadyExists) then
-								table.insert(LootFilterVars[LootFilter.REALMPLAYER].keepList["names"],
-									itemName .. "  ; " .. LootFilter.Locale.LocText["LTAddedCosQuest"]);
-							end;
-						end;
+						LootFilter.AddQuestItemToKeepList(item);
 						return;
 					end;
 				end;

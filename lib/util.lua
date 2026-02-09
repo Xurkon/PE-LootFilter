@@ -88,6 +88,57 @@ function LootFilter.SanitizeName(name)
 	return name;
 end;
 
+function LootFilter.AddQuestItemToKeepList(item)
+	if (not item) or (not item["name"]) then return end;
+
+	-- Only process Quest items
+	local isQuest = false;
+	if (item["itemType"] and item["itemType"] == LootFilter.Locale.LocText["LTQuest"]) then isQuest = true; end;
+	if (item["itemSubType"] and item["itemSubType"] == LootFilter.Locale.LocText["LTQuest"]) then isQuest = true; end;
+
+	if (not isQuest) then return end;
+
+	local itemName = item["name"];
+	local cleanItemName = LootFilter.SanitizeName(itemName);
+
+	-- 1. Check Delete List (User Override - "unless it's specifically set")
+	if (LootFilterVars[LootFilter.REALMPLAYER].deleteList and LootFilterVars[LootFilter.REALMPLAYER].deleteList["names"]) then
+		for k, v in pairs(LootFilterVars[LootFilter.REALMPLAYER].deleteList["names"]) do
+			local cleanExistingName = LootFilter.SanitizeName(LootFilter.stripComment(v));
+			if (cleanExistingName == cleanItemName) then
+				-- It's in the delete list, don't auto-add to keep.
+				return;
+			end;
+		end;
+	end;
+
+	-- 2. Check Keep List (Prevent Duplicates with Robust Matching)
+	local alreadyExists = false;
+	if (LootFilterVars[LootFilter.REALMPLAYER].keepList and LootFilterVars[LootFilter.REALMPLAYER].keepList["names"]) then
+		for k, v in pairs(LootFilterVars[LootFilter.REALMPLAYER].keepList["names"]) do
+			local cleanExistingName = LootFilter.SanitizeName(LootFilter.stripComment(v));
+			if (cleanExistingName == cleanItemName) then
+				alreadyExists = true;
+				break;
+			end;
+		end;
+	end;
+
+	-- 3. Add to Keep List
+	if (not alreadyExists) then
+		if (not LootFilterVars[LootFilter.REALMPLAYER].keepList) then LootFilterVars[LootFilter.REALMPLAYER].keepList = {}; end;
+		if (not LootFilterVars[LootFilter.REALMPLAYER].keepList["names"]) then LootFilterVars[LootFilter.REALMPLAYER].keepList["names"] = {}; end;
+
+		table.insert(LootFilterVars[LootFilter.REALMPLAYER].keepList["names"],
+			itemName .. "  ; " .. LootFilter.Locale.LocText["LTAddedCosQuest"]);
+
+		if (LootFilterVars[LootFilter.REALMPLAYER].notifykeep) and (not LootFilterVars[LootFilter.REALMPLAYER].silent) then
+			LootFilter.print(item["link"] ..
+			" " .. LootFilter.Locale.LocText["LTKept"] .. ": " .. LootFilter.Locale.LocText["LTQuestItem"]);
+		end;
+	end;
+end;
+
 function LootFilter.sendAddonMessage(value, channel)
 	if (channel == 1) then
 		local guild = GetGuildInfo("player");
@@ -176,19 +227,24 @@ function LootFilter.constructCleanList()
 					item["amount"] = LootFilter.getStackSizeOfItem(item);
 					LootFilter.ensureItemValue(item); -- re-resolve value in case GetItemInfo was not ready earlier
 
+					-- Auto-Add Quest Items to Keep List (Robust Check)
+					LootFilter.AddQuestItemToKeepList(item);
+
 					-- Prevent Quest Items from being added to the Clean List (Auto-Sell/Delete)
-					if (item["type"] == LootFilter.Locale.LocText["LTQuest"]) or (item["subType"] == LootFilter.Locale.LocText["LTQuest"]) then
-						-- Skip this item
-					else
-						local reason = LootFilter.matchKeepProperties(item);
-						if (reason == "") then
-							reason = LootFilter.matchDeleteProperties(item); -- items that match delete properties should be deleted first
-							if (reason ~= "") then
-								item["value"] = item["value"] - 1000; -- make sure we delete the item with the lowest value (cleanList will be sorted)
-							end;
-							LootFilter.cleanList[z] = item;
-							z = z + 1;
+					-- Note: AddQuestItemToKeepList handles adding it to keepList if not in deleteList.
+					-- If it IS in deleteList, then AddQuestItemToKeepList returns early.
+					-- Then matchKeepProperties returns "", and matchDeleteProperties returns matched (hopefully).
+					-- But if it's NOT in deleteList, it gets added to KeepList, so matchKeepProperties returns true, and it's skipped here.
+
+					-- Standard Logic: Search Keep List first
+					local reason = LootFilter.matchKeepProperties(item);
+					if (reason == "") then
+						reason = LootFilter.matchDeleteProperties(item); -- items that match delete properties should be deleted first
+						if (reason ~= "") then
+							item["value"] = item["value"] - 1000; -- make sure we delete the item with the lowest value (cleanList will be sorted)
 						end;
+						LootFilter.cleanList[z] = item;
+						z = z + 1;
 					end;
 				else
 					slots = slots + 1;

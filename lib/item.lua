@@ -50,11 +50,11 @@ end
 function LootFilter.deleteItemFromBag(item)
 	if (item ~= nil) then
 		LootFilter.debug("|cffff4444[DELETE]|r Attempting delete: " ..
-		tostring(item["name"]) ..
-		" bag=" ..
-		tostring(item["bag"]) ..
-		" slot=" ..
-		tostring(item["slot"]) .. " confirmdel=" .. tostring(LootFilterVars[LootFilter.REALMPLAYER].confirmdel));
+			tostring(item["name"]) ..
+			" bag=" ..
+			tostring(item["bag"]) ..
+			" slot=" ..
+			tostring(item["slot"]) .. " confirmdel=" .. tostring(LootFilterVars[LootFilter.REALMPLAYER].confirmdel));
 		if LootFilterVars[LootFilter.REALMPLAYER].confirmdel then
 			LootFilter.confirmDelete(item);
 		else
@@ -130,7 +130,8 @@ function LootFilter.openItemIfContainer(item)
 
 				if (LootFilterVars[LootFilter.REALMPLAYER].notifyopen) then
 					LootFilter.print(LootFilter.Locale.LocText["LTTryopen"] ..
-					" " .. item["link"] .. " : " .. LootFilter.Locale.LocText["LTNameMatched"] .. " (" .. value .. ")");
+						" " ..
+						item["link"] .. " : " .. LootFilter.Locale.LocText["LTNameMatched"] .. " (" .. value .. ")");
 				end;
 
 				LootFilter.itemOpen = true;
@@ -175,7 +176,14 @@ function LootFilter.getBasicItemInfo(link)
 		item["id"] = LootFilter.getIdOfItem(item["link"]);
 		item["name"] = LootFilter.getNameOfItem(item["link"]);
 		item["value"] = LootFilter.getValueOfItem(item);
-		item["stack"] = LootFilter.getMaxStackSizeOfItem(item);
+
+		-- Fetch additional info including Type/SubType for Quest detection
+		local _, _, rarity, _, _, itemType, itemSubType, stackSize = GetItemInfo(item["id"]);
+		item["itemType"] = itemType;
+		item["itemSubType"] = itemSubType;
+		item["quality"] = rarity;
+		item["stack"] = tonumber(stackSize) or 1;
+
 		item["info"] = LootFilter.getExtendedItemInfo(item);
 	end;
 	return item;
