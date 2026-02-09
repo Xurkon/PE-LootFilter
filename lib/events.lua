@@ -162,7 +162,7 @@ function LootFilter.OnEvent()
 					local name = item["name"];
 					if (string.lower(name) == string.lower(itemName)) then
 						table.remove(LootFilterVars[LootFilter.REALMPLAYER].itemStack, index);
-						if (LootFilterVars[LootFilter.REALMPLAYER].notifykeep) and (not LootFilterVars[LootFilter.REALMPLAYER].silent) then
+						if (LootFilterVars[LootFilter.REALMPLAYER].notifykeep) then
 							LootFilter.print(item["link"] ..
 								" " .. LootFilter.Locale.LocText["LTKept"] .. ": " ..
 								LootFilter.Locale.LocText["LTQuestItem"]);
@@ -351,9 +351,6 @@ function LootFilter.OnEvent()
 			end
 			if (LootFilterVars[LootFilter.REALMPLAYER].session == nil) then
 				LootFilter.sessionReset();
-			end;
-			if (LootFilterVars[LootFilter.REALMPLAYER].silent == nil) then
-				LootFilterVars[LootFilter.REALMPLAYER].silent = false;
 			end;
 			if (LootFilterVars[LootFilter.REALMPLAYER].lootbotmode == nil) then
 				LootFilterVars[LootFilter.REALMPLAYER].lootbotmode = false;

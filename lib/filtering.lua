@@ -48,7 +48,7 @@ function LootFilter.processItemStack()
 					LootFilter.debug("|cffffffcc[PROCESS]|r matchDeleteProperties => " ..
 						(reason ~= "" and ("|cffff0000DELETE|r: " .. reason) or "no match"));
 					if (reason == "") then
-						if (LootFilterVars[LootFilter.REALMPLAYER].notifynomatch) and (not LootFilterVars[LootFilter.REALMPLAYER].silent) then
+						if (LootFilterVars[LootFilter.REALMPLAYER].notifynomatch) then
 							LootFilter.print(item["link"] ..
 								" " ..
 								LootFilter.Locale.LocText["LTKept"] ..
@@ -58,7 +58,7 @@ function LootFilter.processItemStack()
 					else
 						if (LootFilter.deleteItemFromBag(item)) then
 							LootFilter.debug("|cffffffcc[PROCESS]|r deleteItemFromBag => |cff00ff00SUCCESS|r");
-							if (LootFilterVars[LootFilter.REALMPLAYER].notifydelete) and (not LootFilterVars[LootFilter.REALMPLAYER].silent) then
+							if (LootFilterVars[LootFilter.REALMPLAYER].notifydelete) then
 								LootFilter.print(item["link"] ..
 									" " .. LootFilter.Locale.LocText["LTWasDeleted"] .. ": " .. reason);
 								if (LootFilter.questUpdateToggle == 1) then
@@ -77,7 +77,7 @@ function LootFilter.processItemStack()
 						end;
 					end;
 				else
-					if (LootFilterVars[LootFilter.REALMPLAYER].notifykeep) and (not LootFilterVars[LootFilter.REALMPLAYER].silent) then
+					if (LootFilterVars[LootFilter.REALMPLAYER].notifykeep) then
 						LootFilter.print(item["link"] .. " " .. LootFilter.Locale.LocText["LTKept"] .. ": " .. reason);
 					end;
 					table.remove(LootFilterVars[LootFilter.REALMPLAYER].itemStack, 1);
@@ -85,7 +85,7 @@ function LootFilter.processItemStack()
 			else
 				if (LootFilter.deleteItemFromBag(item)) then
 					LootFilter.debug("|cffffffcc[PROCESS]|r deleteItemFromBag => |cff00ff00SUCCESS|r");
-					if (LootFilterVars[LootFilter.REALMPLAYER].notifydelete) and (not LootFilterVars[LootFilter.REALMPLAYER].silent) then
+					if (LootFilterVars[LootFilter.REALMPLAYER].notifydelete) then
 						LootFilter.print(item["link"] .. " " .. LootFilter.Locale.LocText["LTWasDeleted"] .. ": " ..
 							reason);
 						if (LootFilter.questUpdateToggle == 1) then
@@ -104,7 +104,7 @@ function LootFilter.processItemStack()
 				end;
 			end;
 		else
-			if (LootFilterVars[LootFilter.REALMPLAYER].notifykeep) and (not LootFilterVars[LootFilter.REALMPLAYER].silent) then
+			if (LootFilterVars[LootFilter.REALMPLAYER].notifykeep) then
 				LootFilter.print(item["link"] .. " " .. LootFilter.Locale.LocText["LTKept"] .. ": " .. reason);
 			end;
 			table.remove(LootFilterVars[LootFilter.REALMPLAYER].itemStack, 1);
